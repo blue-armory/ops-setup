@@ -1,0 +1,96 @@
+############################VIMRC START####################################
+syntax on
+set t_co=256
+set t_BE=
+set mouse=
+set clipboard=exclude:.*
+
+inoremap <f2> <ESC>
+vnoremap <f2> <ESC>
+
+nnoremap <f4> 0a\|> unk.ip = unk.host = unk.proj = unk.stat = unk.comment <CR>
+inoremap <f4> <ESC>0a\|> unk.ip = unk.host = unk.proj = unk.stat = unk.comment <CR>
+
+syntax match nTarget "^.*|>.*$"
+highlight nTarget ctermfg=red
+
+syntax match nTargetsHeader "^---- TARGETS ----$"
+highlight nTargetsHeader ctermfg=red
+
+syntax match nNotesHeader "^---- NOTES ----$"
+highlight nNotesHeader ctermfg=red
+
+:nnoremap <F5> "=strftime("%m/%d/%y %H:%M:%S -- ")<CR> Pi
+:inoremap <F5> <C-R>=strftime("%m/%d/%y %H:%M:%S -- ")<CR>
+
+syntax region nTimestamp start="^\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d -- " end="$"
+
+nnoremap <f6> a<C-R>=system("echo -e \"\n________________________\nIP:\nNAME:\nProject:\nOS/ARCH:\nAV:\nNotes:\n++++++++++++++++++++++++++\n\n\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\"")<CR><ESC>3k
+inoremap <f6> <ESCa<C-R>=system("echo -e \"\n________________________\nIP:\nNAME:\nProject:\nOS/ARCH:\nAV:\nNotes:\n++++++++++++++++++++++++++\n\n\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\"")<CR><ESC>3k
+syntax region nTargetSection start="^________________________.*$" end="^+++++++++++++++++++++++++++++++.*$"
+syntax region nTargetSectionEnd start="^%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" end="$"
+highlight nTargetSection ctermfg=green
+highlight nTargetSectionEnd ctermfg=green
+nnoremap <s-f6> a<C-R>=system("echo -e \"+++++++++++++++++++++++++++\n\n\n\n%%%%%%%%%%%%%%%%%%%%%%%%\"")<CR><ESC>3k
+inoremap <s-f6> <ESC>a<C-R>=system("echo -e \"+++++++++++++++++++++++++++\n\n\n\n%%%%%%%%%%%%%%%%%%%%%%%%\"")<CR><ESC>3k
+syntax match nFoldStart "^++++++++++++++++++++++++++$"
+syntax match nFoldEnd "^%%%%%%%%%%%%%%%%%%%%%%%%%%%%%$"
+highlight nFoldStart ctermfg=blue
+highlight nFoldEnd ctermfg=blue
+
+noremap <f7> a<C-R>=system("python -c 'import random, sys; sys.stdout.write(\"%d\" % random.randint(33000,65000))'")<CR>
+inoremap <f7> <C-R>=system("python -c 'import random, sys; sys.stdout.write(\"%d\" % random.randint(33000,65000))'")<CR>
+
+nnoremap <f8> :5split<CR>gg
+
+nnoremap <f9> za
+inoremap <f9> <C-O>za
+nnoremap <S-f9> zM
+inoremap <S-f9> <C-O>zM
+
+set foldmethod=marker
+set foldmarker=+++++++++++++++++++++++++++++,%%%%%%%%%%%%%%%%%%%%%%%%
+
+syntax region nCommentsCStyle start="^//" end="$"
+syntax region nCommentsBashStyle start="^#" end="$"
+syntax region nCommentsCMultilineStyle start="^/\*" end="\*/"
+highlight nCommentsCStyle ctermfg=cyan
+highlight nCommentsBashStyle ctermfg=cyan
+highlight nCommentsCMultilineStyle ctermfg=cyan
+
+syntax match nBashVariable "\$[a-zA-z_][a-zA-z_0-9]*"
+syntax match nBracketVariable "<[a-zA-z_][a-zA-z_0-9]*>"
+highlight nBashVariable ctermfg=black ctermbg=LightGrey
+highlight nBracketVariable ctermfg=black ctermbg=LightGrey
+
+
+
+############################VIMRC END####################################
+
+############################NOTES START####################################
+Target List Example
+|> UNK = RDR1 = unk.proj = unk.stat = unk.comment
+|-> unk.ip = RDR2 = unk.proj = unk.stat = unk.comment
+|--> IP = WKSTN_Name = OP_Name = Success/Failure = Comment (e.g., "External IP")
+
+Implant/Redir Ports Section
+X64 local - 5555
+X86 local - 4444
+D&E local - 6666
+
+LP & Redirector Section
+LP IP - X.X.X.X
+R1 IP - X.X.X.X
+R2 IP - X.X.X.X
+
+
+- ability to replace everywhere $<VARIABLE> appears only
+	- e.g., $SSHIP, $SSHPASS, $SSHUSER
+- define code blocks based on language used (csh, bash, windows cmd line, etc.)
+- vimrc has ability to create "sections" within targets for notes (e.g. "General Survey", "SSH MASQ", "GET PTY", "ROOT LEVEL CHECKS", "TUNNELS")
+- having a section to store all tunnels created? could be a mixture iof Implant/Redir & LP/Redirector sections
+- creds section under each target & overall creds section at top
+- PowerBeacon tracker section: (UUID, Name, Key, IP, Port, Filter, Consumer, Frequency)
+- common commands to insert (e.g., start multihandler x86/x64, msfvenom payload, getpty, tunnels)
+
+############################NOTES END####################################
